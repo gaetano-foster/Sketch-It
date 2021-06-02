@@ -45,37 +45,13 @@ public class App
     {
         init();
 
-        double delta = 0;
-        int desiredFPS = 255;
-        double timePerTick = 1000000000 / desiredFPS;
-        long now;
-        long lastTime = System.nanoTime();
-        long timer = 0;
-        int ticks = 0;
-
         while (running)
         {
-            now = System.nanoTime();
-            delta += (now - lastTime) / timePerTick;
-            timer += now - lastTime;
-            lastTime = now;
-
-            if (delta >= 1)
-            {
-                update();
-                render();
-                ticks++;
-                delta--;
-            }
-
-            if (timer >= 1000000000)
-            {
-                display.setTitle(display.getTitle() + " FPS: " + ticks);
-                ticks = 0;
-                timer = 0;
-            }
+            update();
+            render();
         }
 
+        stop();
     }
 
     private void update()
@@ -85,6 +61,7 @@ public class App
 
     private void render()
     {
+        //todo: implement multithreading for gui
         bs = display.getCanvas().getBufferStrategy();
 
         if (bs == null)
@@ -95,14 +72,15 @@ public class App
 
         g = bs.getDrawGraphics();
         //clear
-        g.clearRect(0, 0, display.getWidth(), display.getHeight());
+        //g.clearRect(0, 0, display.getWidth(), display.getHeight());
         // draw
 
+        g.setPaintMode();
         g.setColor(Color.RED);
 
         if (input.getMouseDown(0))
         {
-            g.fillRect(input.getMouseX(), input.getMouseY(), 10, 10);
+            g.fillOval(input.getMouseX(), input.getMouseY(), 10, 10);
         }
 
         // stop
