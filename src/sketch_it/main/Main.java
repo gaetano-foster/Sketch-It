@@ -6,6 +6,8 @@ public class Main
 {
     public static void main(String[] args)
     {
-        new Display(1200, 700, "SketchIt");
+        App app = new App(1200, 700, "SketchIt");
+
+        app.start();
     }
 }

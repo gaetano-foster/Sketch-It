@@ -29,7 +29,7 @@ public class App
         init();
 
         double delta = 0;
-        int desiredFPS = 240;
+        int desiredFPS = 2147483647;
         double timePerTick = 1000000000 / desiredFPS;
         long now;
         long lastTime = System.nanoTime();
