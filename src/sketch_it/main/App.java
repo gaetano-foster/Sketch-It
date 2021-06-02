@@ -1,5 +1,6 @@
 package sketch_it.main;
 
+import sketch_it.io.Input;
 import sketch_it.io.display.Display;
 
 import java.awt.*;
@@ -11,6 +12,9 @@ public class App
     private int width, height;
     private String title;
     private Display display;
+
+    // input
+    private Input input;
 
     // loop
     private boolean running = false;
@@ -29,6 +33,12 @@ public class App
     private void init()
     {
         display = new Display(width, height, title);
+        input = new Input();
+        display.getFrame().addKeyListener(input);
+        display.getFrame().addMouseListener(input);
+        display.getFrame().addMouseMotionListener(input);
+        display.getCanvas().addMouseListener(input);
+        display.getCanvas().addMouseMotionListener(input);
     }
 
     private void run()
@@ -87,6 +97,13 @@ public class App
         //clear
         g.clearRect(0, 0, display.getWidth(), display.getHeight());
         // draw
+
+        g.setColor(Color.RED);
+
+        if (input.getMouseDown(0))
+        {
+            g.fillRect(input.getMouseX(), input.getMouseY(), 10, 10);
+        }
 
         // stop
         bs.show();
