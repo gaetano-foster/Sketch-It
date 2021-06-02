@@ -2,6 +2,9 @@ package sketch_it.main;
 
 import sketch_it.io.display.Display;
 
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+
 public class App
 {
     // display
@@ -11,6 +14,10 @@ public class App
 
     // loop
     private boolean running = false;
+
+    // rendering
+    private BufferStrategy bs;
+    private Graphics g;
 
     public App(int width, int height, String title)
     {
@@ -68,7 +75,22 @@ public class App
 
     private void render()
     {
+        bs = display.getCanvas().getBufferStrategy();
 
+        if (bs == null)
+        {
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+
+        g = bs.getDrawGraphics();
+        //clear
+        g.clearRect(0, 0, display.getWidth(), display.getHeight());
+        // draw
+
+        // stop
+        bs.show();
+        g.dispose();
     }
 
     public synchronized void start()
