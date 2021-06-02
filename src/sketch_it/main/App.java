@@ -34,7 +34,7 @@ public class App
         long now;
         long lastTime = System.nanoTime();
         long timer = 0;
-        float ticks = 0;
+        int ticks = 0;
 
         while (running)
         {
