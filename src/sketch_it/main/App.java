@@ -13,7 +13,6 @@ public class App
     private int width, height;
     private String title;
     private Display display;
-    private Display secondary;
 
     // input
     private Input input;
@@ -24,15 +23,16 @@ public class App
     // rendering
     private BufferStrategy bs;
     private Graphics g;
-    private BufferStrategy sbs;
-    private Graphics sg;
 
     // drawing
-    private int divider = 80;
+    private final int DIVIDER = 80;
     private long start = System.nanoTime();
-    private long nextSecond = 1000000000 / divider;
+    private long nextSecond = 1000000000 / DIVIDER;
     private int tmx = 0, tmy = 0;
     private float brushSize = 1f;
+    private String mode = "pencil";
+    private int px = 0, py = 0;
+
 
     public App(int width, int height, String title)
     {
@@ -44,7 +44,6 @@ public class App
     private void init()
     {
         display = new Display(width, height, title);
-        secondary = new Display(300, 300, "Sketch Info");
         input = new Input();
         display.getFrame().addKeyListener(input);
         display.getFrame().addMouseListener(input);
@@ -69,12 +68,12 @@ public class App
     private void update()
     {
         if (input.getKeyDown(KeyEvent.VK_1))
-            brushSize = 1f;
+            mode = "pencil";
         if (input.getKeyDown(KeyEvent.VK_2))
-            brushSize = 2f;
+            mode = "radial";
         if (input.getKeyDown(KeyEvent.VK_3))
-            brushSize = 3f;
-        if (input.getKeyDown(KeyEvent.VK_4))
+            mode = "marker";
+        /*if (input.getKeyDown(KeyEvent.VK_4))
             brushSize = 4f;
         if (input.getKeyDown(KeyEvent.VK_5))
             brushSize = 5f;
@@ -85,12 +84,7 @@ public class App
         if (input.getKeyDown(KeyEvent.VK_8))
             brushSize = 8f;
         if (input.getKeyDown(KeyEvent.VK_9))
-            brushSize = 9f;
-
-        if (brushSize <= 4)
-            divider = 80;
-        else
-            divider = 150;
+            brushSize = 9f;*/
     }
 
     private void render()
@@ -116,39 +110,42 @@ public class App
         {
             tmx = input.getMouseX();
             tmy = input.getMouseY();
-            nextSecond += 1000000000 / divider;
+            nextSecond += 1000000000 / DIVIDER;
         }
+
+        Graphics2D g2d = (Graphics2D) g;
 
         if (input.getMouseDown(0))
         {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setStroke(new BasicStroke(brushSize));
-            g2d.drawLine(tmx, tmy, mx, my);
+            if (mode == "pencil")
+            {
+                brushSize = 1f;
+                g2d.setStroke(new BasicStroke(brushSize));
+                g2d.drawLine(tmx, tmy, mx, my);
+            }
+
+            if (mode == "marker")
+            {
+                brushSize = 5f;
+                g2d.setStroke(new BasicStroke(brushSize));
+                g2d.drawLine(tmx, tmy, mx, my);
+            }
+
+            if (mode == "radial")
+            {
+                g.drawLine(px, py, mx, my);
+            }
+        }
+
+        if (mode == "radial" && input.getMouseDown(1))
+        {
+            px = input.getMouseX();
+            py = input.getMouseY();
         }
 
         // stop
         bs.show();
         g.dispose();
-
-        // secondary
-        sbs = secondary.getCanvas().getBufferStrategy();
-
-        if (sbs == null)
-        {
-            secondary.getCanvas().createBufferStrategy(3);
-            return;
-        }
-
-        sg = sbs.getDrawGraphics();
-        // clear
-        sg.clearRect(0, 0, 300, 300);
-        // draw
-
-        sg.drawString("Brush size: " + brushSize, 10, 10);
-
-        // stop
-        sbs.show();
-        sg.dispose();
     }
 
     public synchronized void start()
