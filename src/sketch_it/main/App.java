@@ -3,9 +3,12 @@ package sketch_it.main;
 import sketch_it.io.Input;
 import sketch_it.io.display.Display;
 
+import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.text.ParseException;
 
 public class App
 {
@@ -25,13 +28,10 @@ public class App
     private Graphics g;
 
     // drawing
-    private final int DIVIDER = 80;
-    private long start = System.nanoTime();
-    private long nextSecond = 1000000000 / DIVIDER;
-    private int tmx = 0, tmy = 0;
     private float brushSize = 1f;
     private String mode = "pencil";
-    private int px = 0, py = 0;
+    private int px, py;
+    private int cx, cy, cz;
 
 
     public App(int width, int height, String title)
@@ -50,6 +50,8 @@ public class App
         display.getFrame().addMouseMotionListener(input);
         display.getCanvas().addMouseListener(input);
         display.getCanvas().addMouseMotionListener(input);
+        px = input.getMouseX();
+        py = input.getMouseY();
     }
 
     private void run()
@@ -73,11 +75,36 @@ public class App
             mode = "radial";
         if (input.getKeyDown(KeyEvent.VK_3))
             mode = "marker";
-        /*if (input.getKeyDown(KeyEvent.VK_4))
-            brushSize = 4f;
+        if (input.getKeyDown(KeyEvent.VK_4))
+            mode = "erase";
         if (input.getKeyDown(KeyEvent.VK_5))
-            brushSize = 5f;
-        if (input.getKeyDown(KeyEvent.VK_6))
+        {
+            JFormattedTextField field = null;
+            try
+            {
+                field = new JFormattedTextField(new MaskFormatter(
+                            "###, ###, ###"));
+            } catch (ParseException e)
+            {
+                e.printStackTrace();
+            }
+
+            field.setColumns(10);
+            field.setEnabled(true);
+            field.setEditable(true);
+            JOptionPane.showOptionDialog(null, "Colors: ", "Color Changer", -1, 0, null,
+                    new Object[]
+                            { field }, field);
+            JOptionPane.showMessageDialog(null, "Colors changed!");
+
+            String colors[] = field.getText().split(", ");
+
+            cx = Integer.parseInt(colors[0]);
+            cy = Integer.parseInt(colors[1]);
+            cz = Integer.parseInt(colors[2]);
+        }
+
+        /*if (input.getKeyDown(KeyEvent.VK_6))
             brushSize = 6f;
         if (input.getKeyDown(KeyEvent.VK_7))
             brushSize = 7f;
@@ -99,19 +126,13 @@ public class App
 
         g = bs.getDrawGraphics();
         // draw
+        g.clearRect(1000, 0, width - 1000, height);
         g.setColor(Color.BLACK);
+        g.drawLine(1000, 0, 1000, height);
+        g.drawString("Drawing Mode: " + mode, 1040, 50);
+        g.drawString("Drawing Color: " + cx + ", " + cy + ", " + cz, 1040, 100);
 
         int mx = input.getMouseX(), my = input.getMouseY();
-
-        long end = System.nanoTime();
-        long elapsedTime = end - start;
-
-        if (elapsedTime >= nextSecond)
-        {
-            tmx = input.getMouseX();
-            tmy = input.getMouseY();
-            nextSecond += 1000000000 / DIVIDER;
-        }
 
         Graphics2D g2d = (Graphics2D) g;
 
@@ -120,24 +141,53 @@ public class App
             if (mode == "pencil")
             {
                 brushSize = 1f;
+                g2d.setColor(new Color(cx, cy, cz));
                 g2d.setStroke(new BasicStroke(brushSize));
-                g2d.drawLine(tmx, tmy, mx, my);
+                g2d.drawLine(px, py, mx, my);
             }
 
             if (mode == "marker")
             {
-                brushSize = 5f;
+                brushSize = 8f;
+                g2d.setColor(new Color(cx, cy, cz));
                 g2d.setStroke(new BasicStroke(brushSize));
-                g2d.drawLine(tmx, tmy, mx, my);
+                g2d.drawLine(px, py, mx, my);
+            }
+
+            if (mode == "erase")
+            {
+                brushSize = 12f;
+                g2d.setColor(new Color(238, 238, 238));
+                g2d.setStroke(new BasicStroke(brushSize));
+                g2d.drawLine(px, py, mx, my);
             }
 
             if (mode == "radial")
             {
+                g2d.setColor(new Color(cx, cy, cz));
                 g.drawLine(px, py, mx, my);
             }
         }
 
         if (mode == "radial" && input.getMouseDown(1))
+        {
+            px = input.getMouseX();
+            py = input.getMouseY();
+        }
+
+        if (mode == "pencil")// && input.getMouseDown(0))
+        {
+            px = input.getMouseX();
+            py = input.getMouseY();
+        }
+
+        if (mode == "marker")// && input.getMouseDown(0))
+        {
+            px = input.getMouseX();
+            py = input.getMouseY();
+        }
+
+        if (mode == "erase")// && input.getMouseDown(0))
         {
             px = input.getMouseX();
             py = input.getMouseY();
