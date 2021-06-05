@@ -8,7 +8,6 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
-import java.text.ParseException;
 
 public class App
 {
@@ -91,7 +90,7 @@ public class App
             color = Color.MAGENTA;
         if (input.getKeyDown(KeyEvent.VK_MINUS))
             color = Color.CYAN;
-        if (input.getKeyDown(KeyEvent.VK_PLUS))
+        if (input.getKeyDown(KeyEvent.VK_EQUALS))
             color = Color.GRAY;
     }
 
