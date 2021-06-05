@@ -3,11 +3,15 @@ package sketch_it.main;
 import sketch_it.io.Input;
 import sketch_it.io.display.Display;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class App
 {
