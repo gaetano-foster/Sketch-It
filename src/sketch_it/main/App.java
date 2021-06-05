@@ -111,6 +111,20 @@ public class App
         g.drawLine(1000, 0, 1000, height);
         g.drawString("Drawing Mode: " + mode, 1040, 50);
         g.drawString("Drawing Color: " + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue(), 1040, 100);
+        g.drawString("Controls: ", 1040, 150);
+        g.drawString("Pencil Tool: 1", 1040, 175);
+        g.drawString("Radial Tool: 2", 1040, 200);
+        g.drawString("Marker Tool: 3", 1040, 225);
+        g.drawString("Eraser Tool: 4", 1040, 250);
+        g.drawString("Black Color: 5", 1040, 275);
+        g.drawString("Red Color: 6", 1040, 300);
+        g.drawString("Green Color: 7", 1040, 325);
+        g.drawString("Blue Color: 8", 1040, 350);
+        g.drawString("Yellow Color: 9", 1040, 375);
+        g.drawString("Purple Color: 0", 1040, 400);
+        g.drawString("Cyan Color: -", 1040, 425);
+        g.drawString("Grey Color: =", 1040, 450);
+
 
         int mx = input.getMouseX(), my = input.getMouseY();
 
