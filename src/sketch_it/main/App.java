@@ -128,7 +128,7 @@ public class App
         g.drawString("Purple Color: 0", 1040, 400);
         g.drawString("Cyan Color: -", 1040, 425);
         g.drawString("Grey Color: =", 1040, 450);
-        g.drawString("Set Pivot Point (Radial Only): Right Click", 1040, 500);
+        g.drawString("Set Radial Point: Right Click", 1040, 500);
         g.drawString("Draw: Left Click", 1040, 525);
 
 
