@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class Input implements KeyListener, MouseListener, MouseMotionListener
 {
-    private boolean[] keys = new boolean[256];
+    private boolean[] keys = new boolean[32767];
     private boolean mouse1 = false;
     private boolean mouse2 = false;
     private boolean mouse3 = false;

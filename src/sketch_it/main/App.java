@@ -31,7 +31,7 @@ public class App
     private float brushSize = 1f;
     private String mode = "pencil";
     private int px, py;
-    private int cx, cy, cz;
+    private Color color = Color.BLACK;
 
 
     public App(int width, int height, String title)
@@ -78,40 +78,21 @@ public class App
         if (input.getKeyDown(KeyEvent.VK_4))
             mode = "erase";
         if (input.getKeyDown(KeyEvent.VK_5))
-        {
-            JFormattedTextField field = null;
-            try
-            {
-                field = new JFormattedTextField(new MaskFormatter(
-                            "###, ###, ###"));
-            } catch (ParseException e)
-            {
-                e.printStackTrace();
-            }
-
-            field.setColumns(10);
-            field.setEnabled(true);
-            field.setEditable(true);
-            JOptionPane.showOptionDialog(null, "Colors: ", "Color Changer", -1, 0, null,
-                    new Object[]
-                            { field }, field);
-            JOptionPane.showMessageDialog(null, "Colors changed!");
-
-            String colors[] = field.getText().split(", ");
-
-            cx = Integer.parseInt(colors[0]);
-            cy = Integer.parseInt(colors[1]);
-            cz = Integer.parseInt(colors[2]);
-        }
-
-        /*if (input.getKeyDown(KeyEvent.VK_6))
-            brushSize = 6f;
+            color = Color.BLACK;
+        if (input.getKeyDown(KeyEvent.VK_6))
+            color = Color.RED;
         if (input.getKeyDown(KeyEvent.VK_7))
-            brushSize = 7f;
+            color = Color.GREEN;
         if (input.getKeyDown(KeyEvent.VK_8))
-            brushSize = 8f;
+            color = Color.BLUE;
         if (input.getKeyDown(KeyEvent.VK_9))
-            brushSize = 9f;*/
+            color = Color.YELLOW;
+        if (input.getKeyDown(KeyEvent.VK_0))
+            color = Color.MAGENTA;
+        if (input.getKeyDown(KeyEvent.VK_MINUS))
+            color = Color.CYAN;
+        if (input.getKeyDown(KeyEvent.VK_PLUS))
+            color = Color.GRAY;
     }
 
     private void render()
@@ -130,7 +111,7 @@ public class App
         g.setColor(Color.BLACK);
         g.drawLine(1000, 0, 1000, height);
         g.drawString("Drawing Mode: " + mode, 1040, 50);
-        g.drawString("Drawing Color: " + cx + ", " + cy + ", " + cz, 1040, 100);
+        g.drawString("Drawing Color: " + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue(), 1040, 100);
 
         int mx = input.getMouseX(), my = input.getMouseY();
 
@@ -141,7 +122,7 @@ public class App
             if (mode == "pencil")
             {
                 brushSize = 1f;
-                g2d.setColor(new Color(cx, cy, cz));
+                g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue()));
                 g2d.setStroke(new BasicStroke(brushSize));
                 g2d.drawLine(px, py, mx, my);
             }
@@ -149,7 +130,7 @@ public class App
             if (mode == "marker")
             {
                 brushSize = 8f;
-                g2d.setColor(new Color(cx, cy, cz));
+                g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue()));
                 g2d.setStroke(new BasicStroke(brushSize));
                 g2d.drawLine(px, py, mx, my);
             }
@@ -164,8 +145,10 @@ public class App
 
             if (mode == "radial")
             {
-                g2d.setColor(new Color(cx, cy, cz));
-                g.drawLine(px, py, mx, my);
+                brushSize = 4f;
+                g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue()));
+                g2d.setStroke(new BasicStroke(brushSize));
+                g2d.drawLine(px, py, mx, my);
             }
         }
 
@@ -211,5 +194,6 @@ public class App
         if (!running)
             return;
         running = false;
+        System.exit(0);
     }
 }
