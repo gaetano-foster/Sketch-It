@@ -1,17 +1,11 @@
-package sketch_it.main;
+package com.github.gaetanofoster.sketch_it.main;
 
-import sketch_it.io.Input;
-import sketch_it.io.display.Display;
+import com.github.gaetanofoster.sketch_it.io.Input;
+import com.github.gaetanofoster.sketch_it.io.display.Display;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class App
 {
@@ -104,12 +98,13 @@ public class App
 
         if (bs == null)
         {
-            display.getCanvas().createBufferStrategy(3);
+            display.getCanvas().createBufferStrategy(2);
             return;
         }
 
         g = bs.getDrawGraphics();
         // draw
+        g.setColor(Color.WHITE);
         g.clearRect(1000, 0, width - 1000, height);
         g.setColor(Color.BLACK);
         g.drawLine(1000, 0, 1000, height);

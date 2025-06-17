@@ -1,4 +1,4 @@
-package sketch_it.io.display;
+package com.github.gaetanofoster.sketch_it.io.display;
 
 import javax.swing.*;
 import java.awt.*;

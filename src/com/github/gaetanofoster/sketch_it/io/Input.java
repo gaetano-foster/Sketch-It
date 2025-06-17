@@ -1,4 +1,4 @@
-package sketch_it.io;
+package com.github.gaetanofoster.sketch_it.io;
 
 import java.awt.event.*;
 

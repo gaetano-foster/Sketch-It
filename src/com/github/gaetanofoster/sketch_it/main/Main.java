@@ -1,6 +1,4 @@
-package sketch_it.main;
-
-import sketch_it.io.display.Display;
+package com.github.gaetanofoster.sketch_it.main;
 
 public class Main
 {
